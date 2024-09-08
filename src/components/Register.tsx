@@ -27,7 +27,7 @@ const schema = yup.object().shape({
 const Register: React.FC = () => {
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
-  const { register, handleSubmit, formState: { errors }, reset  } = useForm<RegisterFormInputs>({
+  const { register, handleSubmit, formState: { errors }, reset } = useForm<RegisterFormInputs>({
     resolver: yupResolver(schema)
   });
 
@@ -59,39 +59,41 @@ const Register: React.FC = () => {
   };
 
   return (
-    <div className="container mt-5">
-      <h2 className="text-center mb-4">Register</h2>
-      {successMessage && (
-        <div className="alert alert-success animate-alert" role="alert">
-          {successMessage}
-        </div>
-      )}
-      <form onSubmit={handleSubmit(onSubmit)} className="border p-4 shadow-sm rounded">
-        <div className="mb-3">
-          <label className="form-label">Username</label>
-          <input {...register('username')} className={`form-control ${errors.username ? 'is-invalid' : ''}`} />
-          <div className="invalid-feedback">{errors.username?.message}</div>
-        </div>
-        <div className="mb-3">
-          <label className="form-label">Email</label>
-          <input {...register('email')} className={`form-control ${errors.email ? 'is-invalid' : ''}`} />
-          <div className="invalid-feedback">{errors.email?.message}</div>
-        </div>
-        <div className="mb-3">
-          <label className="form-label">Password</label>
-          <input type="password" {...register('password')} className={`form-control ${errors.password ? 'is-invalid' : ''}`} />
-          <div className="invalid-feedback">{errors.password?.message}</div>
-        </div>
-        <div className="mb-3">
-          <label className="form-label">Confirm Password</label>
-          <input type="password" {...register('confirmPassword')} className={`form-control ${errors.confirmPassword ? 'is-invalid' : ''}`} />
-          <div className="invalid-feedback">{errors.confirmPassword?.message}</div>
-        </div>
-        <div className="d-flex justify-content-between align-items-center">
-          <Link to="/login" className="text-decoration-none">Back to Login</Link>
-          <button type="submit" className="btn btn-primary">Register</button>
-        </div>
-      </form>
+    <div className="container mt-5 d-flex justify-content-center">
+      <div className="col-12 col-md-8 col-lg-6">
+        <h2 className="text-center mb-4">Register</h2>
+        {successMessage && (
+          <div className="alert alert-success animate-alert" role="alert">
+            {successMessage}
+          </div>
+        )}
+        <form onSubmit={handleSubmit(onSubmit)} className="border p-4 shadow-sm rounded">
+          <div className="mb-3">
+            <label className="form-label">Username</label>
+            <input {...register('username')} className={`form-control ${errors.username ? 'is-invalid' : ''}`} />
+            <div className="invalid-feedback">{errors.username?.message}</div>
+          </div>
+          <div className="mb-3">
+            <label className="form-label">Email</label>
+            <input {...register('email')} className={`form-control ${errors.email ? 'is-invalid' : ''}`} />
+            <div className="invalid-feedback">{errors.email?.message}</div>
+          </div>
+          <div className="mb-3">
+            <label className="form-label">Password</label>
+            <input type="password" {...register('password')} className={`form-control ${errors.password ? 'is-invalid' : ''}`} />
+            <div className="invalid-feedback">{errors.password?.message}</div>
+          </div>
+          <div className="mb-3">
+            <label className="form-label">Confirm Password</label>
+            <input type="password" {...register('confirmPassword')} className={`form-control ${errors.confirmPassword ? 'is-invalid' : ''}`} />
+            <div className="invalid-feedback">{errors.confirmPassword?.message}</div>
+          </div>
+          <div className="d-flex justify-content-between align-items-center">
+            <Link to="/login" className="text-decoration-none">Back to Login</Link>
+            <button type="submit" className="btn btn-primary">Register</button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 };
