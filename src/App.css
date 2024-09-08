@@ -36,3 +36,21 @@
     transform: rotate(360deg);
   }
 }
+/* src/App.css */
+.alert.animate-alert {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: auto;
+  z-index: 1050;
+  opacity: 0;
+  transform: translateY(-20px);
+  animation: slide-down 0.5s forwards;
+}
+
+@keyframes slide-down {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

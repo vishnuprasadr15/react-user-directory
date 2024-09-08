@@ -1,9 +1,11 @@
 // src/components/Register.tsx
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { Link } from 'react-router-dom'; // Import Link for routing
+import axios from 'axios';
+import '../App.css';
 
 type RegisterFormInputs = {
   username: string;
@@ -23,17 +25,47 @@ const schema = yup.object().shape({
 });
 
 const Register: React.FC = () => {
-  const { register, handleSubmit, formState: { errors } } = useForm<RegisterFormInputs>({
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
+
+  const { register, handleSubmit, formState: { errors }, reset  } = useForm<RegisterFormInputs>({
     resolver: yupResolver(schema)
   });
 
-  const onSubmit: SubmitHandler<RegisterFormInputs> = data => {
-    console.log(data);
+  const onSubmit: SubmitHandler<RegisterFormInputs> = async (data) => {
+    try {
+      const response = await axios.post(`${process.env.REACT_APP_API_ENDPOINT}/users`, {
+        username: data.username,
+        email: data.email,
+        password: data.password,
+      });
+
+      console.log('User registered successfully:', response.data);
+      // Handle success (e.g., redirect to login page, show success message)
+
+      // Set success message upon successful registration
+      setSuccessMessage('User registered successfully!');
+
+      // Clear form data
+      reset();
+
+      // Trigger page refresh after 3 seconds
+      setTimeout(() => {
+        setSuccessMessage(null);
+      }, 3000);
+    } catch (error) {
+      console.error('There was an error registering the user:', error);
+      // Handle error (e.g., show error message)
+    }
   };
 
   return (
     <div className="container mt-5">
       <h2 className="text-center mb-4">Register</h2>
+      {successMessage && (
+        <div className="alert alert-success animate-alert" role="alert">
+          {successMessage}
+        </div>
+      )}
       <form onSubmit={handleSubmit(onSubmit)} className="border p-4 shadow-sm rounded">
         <div className="mb-3">
           <label className="form-label">Username</label>
@@ -55,7 +87,6 @@ const Register: React.FC = () => {
           <input type="password" {...register('confirmPassword')} className={`form-control ${errors.confirmPassword ? 'is-invalid' : ''}`} />
           <div className="invalid-feedback">{errors.confirmPassword?.message}</div>
         </div>
-        {/* Back to Login Link */}
         <div className="d-flex justify-content-between align-items-center">
           <Link to="/login" className="text-decoration-none">Back to Login</Link>
           <button type="submit" className="btn btn-primary">Register</button>
