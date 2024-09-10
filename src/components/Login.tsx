@@ -36,12 +36,13 @@ const Login: React.FC = () => {
                 }
             );
 
-            const { token } = response.data;
+            const { token, refreshToken } = response.data;
 
             // Validate the token (simple validation, normally done by backend)
             if (token) {
                 // Save the token in a cookie
                 Cookies.set('jwt', token, { expires: 1 }); // Expires in 1 day
+                Cookies.set('refreshToken', refreshToken, { expires: 1 }); // Expires in 1 day
 
                 // Redirect to welcome page
                 navigate('/welcome');
